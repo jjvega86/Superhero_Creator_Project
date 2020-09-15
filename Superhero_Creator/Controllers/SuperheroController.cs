@@ -11,11 +11,11 @@ namespace Superhero_Creator.Controllers
 {
     public class SuperheroController : Controller
     {
-        private ApplicationDbContext db;
+        private readonly ApplicationDbContext context;
 
-        public SuperheroController(ApplicationDbContext database)
+        public SuperheroController(ApplicationDbContext db)
         {
-            db = database;
+            context = db;
         }
         // GET: SuperheroController
         public ActionResult Index()
@@ -43,6 +43,8 @@ namespace Superhero_Creator.Controllers
         {
             try
             {
+                context.Add(superhero);
+                context.SaveChanges();
                 return RedirectToAction("Index");
             }
             catch
