@@ -4,11 +4,18 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Superhero_Creator.Data;
 
 namespace Superhero_Creator.Controllers
 {
     public class SuperheroController : Controller
     {
+        private ApplicationDbContext db;
+
+        public SuperheroController(ApplicationDbContext database)
+        {
+            db = database;
+        }
         // GET: SuperheroController
         public ActionResult Index()
         {
