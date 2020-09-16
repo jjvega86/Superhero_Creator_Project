@@ -11,16 +11,18 @@ namespace Superhero_Creator.Controllers
 {
     public class SuperheroController : Controller
     {
-        private readonly ApplicationDbContext context;
+        public ApplicationDbContext context;
 
         public SuperheroController(ApplicationDbContext db)
         {
             context = db;
         }
         // GET: SuperheroController
+       
         public ActionResult Index()
         {
-            return View();
+            List<Superhero> collection = context.Superheroes.ToList();
+            return View(collection);
         }
 
         // GET: SuperheroController/Details/5
@@ -49,28 +51,31 @@ namespace Superhero_Creator.Controllers
             }
             catch
             {
-                return View();
+                return View(superhero);
             }
         }
 
         // GET: SuperheroController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            var superhero = context.Superheroes.Where(hero => hero.Id == id).SingleOrDefault();
+            return View(superhero);
         }
 
         // POST: SuperheroController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(Superhero hero)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                context.Update(hero);
+                context.SaveChanges();
+                return RedirectToAction("Index");
             }
             catch
             {
-                return View();
+                return View("Index");
             }
         }
 
